@@ -6,6 +6,8 @@
 
 [简体中文](README.md) | English
 
+**[Try it online →](https://tsix2019.github.io/safeIP/)**
+
 </div>
 
 ![Home](docs/images/home.png)
@@ -66,6 +68,10 @@ A typical "what is my IP" site only shows the one IP it sees. SafeIP checks from
 </table>
 
 ## Getting started
+
+**Online**
+
+Open https://tsix2019.github.io/safeIP/ . The online version is served over HTTPS, so the HTTP-only ip-api is unavailable (proxy / hosting flags have one source fewer). For full data, download the repository and open it locally.
 
 **Option 1: open the file**
 

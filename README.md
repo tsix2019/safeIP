@@ -6,6 +6,8 @@
 
 简体中文 | [English](README.en.md)
 
+**[在线使用 →](https://tsix2019.github.io/safeIP/)**
+
 </div>
 
 ![首页](docs/images/home.png)
@@ -64,6 +66,10 @@
 </table>
 
 ## 快速开始
+
+**在线使用**
+
+打开 https://tsix2019.github.io/safeIP/ 即可。在线版是 HTTPS 页面，仅支持 HTTP 的 ip-api 会停用（代理 / 机房标记少一个数据源）；想要完整数据，可以下载到本地双击打开。
 
 **方式一：直接打开**
 
