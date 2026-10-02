@@ -1,0 +1,3 @@
+# 统一使用 LF 换行，避免 Windows 与其他平台之间的换行符差异
+* text=auto eol=lf
+*.png binary

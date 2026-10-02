@@ -1,0 +1,11 @@
+{
+  "name": "safeip",
+  "version": "1.0.0",
+  "private": true,
+  "description": "全球 IP 分流检测：同时用国内服务、国外服务和 AI 站点检测出口 IP，检查 WebRTC / DNS 泄露。纯前端静态页。",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test \"tests/*.test.js\"",
+    "start": "python -m http.server 8000"
+  }
+}

@@ -1,0 +1,7 @@
+# 本地开发配置（预览服务器等）
+.claude/
+
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
