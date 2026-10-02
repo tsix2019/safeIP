@@ -6,9 +6,24 @@
   <meta name="color-scheme" content="light dark">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://ipservice.ws.126.net https://whois.pconline.com.cn https://vv.video.qq.com https://opendata.baidu.com; style-src 'self'; connect-src https: http://ip-api.com; img-src 'self' data: blob:; base-uri 'none'; form-action 'none'">
-  <title>SafeIP · 全球 IP 分流检测</title>
-  <meta name="description" content="一站式 IP 检测工具箱：国内外多源 IP、分流测试、AI 服务地区、IP 评分、WebRTC / DNS 泄露、全球 Ping、浏览器指纹、Whois。纯前端，无后端。">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a78d6'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='white' stroke-width='2.2'/%3E%3Cpath d='M7 16h18M16 7c-3.6 4-3.6 14 0 18M16 7c3.6 4 3.6 14 0 18' fill='none' stroke='white' stroke-width='1.6'/%3E%3C/svg%3E">
+  <title>SafeIP · 全球 IP 分流检测 · WebRTC / DNS 泄露 · AI 地区检测</title>
+  <meta name="description" content="开了代理分流，国内外网站分别看到哪个 IP？SafeIP 用国内外几十个服务同时检测你的出口 IP，并检查 WebRTC / DNS 泄露、ChatGPT / Claude 判定的地区和 IP 风险评分。">
+  <!-- 自行部署到其他域名时，把下面的 canonical 与 og:url / og:image 换成你的地址 -->
+  <link rel="canonical" href="https://tsix2019.github.io/safeIP/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SafeIP">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:url" content="https://tsix2019.github.io/safeIP/">
+  <meta property="og:title" content="SafeIP · 全球 IP 分流检测">
+  <meta property="og:description" content="开了代理分流，国内外网站分别看到哪个 IP？用国内外几十个服务同时检测出口 IP，并检查 WebRTC / DNS 泄露、AI 服务地区和 IP 风险评分。纯前端开源，无后端。">
+  <meta property="og:image" content="https://tsix2019.github.io/safeIP/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SafeIP · 全球 IP 分流检测">
+  <meta name="twitter:card" content="summary_large_image">
   <!--
     脚本全部 defer 并放在 head：上面的 CSP meta 标签会让 Chrome 的预加载扫描器失效，
     放在 body 末尾的普通脚本只能等解析器走到才下载，35 个文件会一个接一个串行下载。
@@ -55,6 +70,26 @@
   <script defer fetchpriority="high" src="js/pages/card.js"></script>
   <script defer fetchpriority="high" src="js/router.js"></script>
   <script defer fetchpriority="high" src="js/app.js"></script>
+  <!-- 结构化数据（只是数据，不会执行，不受 CSP 限制） -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SafeIP",
+    "alternateName": "SafeIP · 全球 IP 分流检测",
+    "url": "https://tsix2019.github.io/safeIP/",
+    "description": "用国内外几十个服务同时检测出口 IP，判断代理分流是否生效，检查 WebRTC / DNS 泄露、ChatGPT / Claude 判定的地区和 IP 风险评分，另有全球 Ping、浏览器指纹、Whois 与 ASN 查询。",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "需要启用 JavaScript",
+    "inLanguage": "zh-CN",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+    "license": "https://opensource.org/licenses/MIT",
+    "author": { "@type": "Person", "name": "tsix2019", "url": "https://github.com/tsix2019" },
+    "sameAs": ["https://github.com/tsix2019/safeIP"]
+  }
+  </script>
 </head>
 <body>
   <header class="topbar">
@@ -90,10 +125,14 @@
     <div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
   </header>
 
-  <!-- 脚本加载完成、路由挂载页面时替换掉占位 -->
+  <!-- 启动页：脚本加载完成、路由挂载页面时被替换；不执行 JS 的搜索引擎也能读到这段介绍 -->
   <main class="wrap" id="view">
-    <div class="boot" id="boot" role="status"><span class="st-icon st-muted" aria-hidden="true"></span>正在加载…</div>
-    <noscript><div class="boot">SafeIP 需要启用 JavaScript 才能运行。</div></noscript>
+    <section class="boot">
+      <h1 class="boot-title">SafeIP · 全球 IP 分流检测</h1>
+      <p class="boot-desc">开了代理分流，国内外网站分别看到哪个 IP？SafeIP 从国内外几十个服务和网站的视角同时检测你的出口 IP，判断分流规则是否生效，并检查 WebRTC / DNS 泄露、ChatGPT / Claude 判定的地区和 IP 风险评分。所有检测都在浏览器里完成，没有后端。</p>
+      <p class="boot-status" id="boot" role="status"><span class="st-icon st-muted" aria-hidden="true"></span>正在加载…</p>
+      <noscript><p class="boot-status">SafeIP 需要启用 JavaScript 才能运行。</p></noscript>
+    </section>
   </main>
 
   <footer class="footer">

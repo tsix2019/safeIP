@@ -58,6 +58,7 @@ safeIP/
 
 - 使用经典 `<script>`（非 ES Module）：Chrome 禁止 `file://` 页面加载模块脚本，经典脚本才能保证双击可用。
 - 脚本全部写成 `<script defer fetchpriority="high">` 放在 `<head>`：CSP `<meta>` 会让 Chrome 的预加载扫描器失效，放在 `<body>` 末尾的普通脚本会逐个串行下载（实测 GitHub Pages 上主体空白约 15 秒）；改为 defer 后并行下载，约 1 秒出现主体。第一个脚本放在样式表之前：部分安全软件会在第一个 `<script>` 前插入同步脚本，插在样式表之后时它要等样式表下载完，会推迟所有脚本的下载。`tests/html.test.js` 防止回退。
+- SEO：`index.html` 带 canonical、Open Graph / Twitter 卡片、JSON-LD（WebApplication）和图标文件（`assets/`）；`#view` 里的启动页写有 h1 与介绍，不执行 JS 的爬虫也能读到页面主题。`#view` 至少一屏高、出口卡片先显示骨架、首页副标题检测中也有文字，避免结果陆续出现时的布局偏移。
 - 先画页面再检测：`app.js` 挂载页面后等下一帧绘制完成再启动检测（创建 WebRTC 连接在刚启动的浏览器里可能占用主线程一两秒）；浏览器指纹在主线程空闲时采集。
 - 所有模块挂到全局命名空间 `SafeIP`（浏览器为 `window.SafeIP`，Node 测试中为 `globalThis.SafeIP`）。模块加载时不触碰 DOM，因此可在 Node 中直接 `require` 做单测。
 - 零依赖、无构建步骤。

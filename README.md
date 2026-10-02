@@ -85,7 +85,7 @@ python -m http.server 8000
 
 **方式三：部署到静态托管**
 
-GitHub Pages、Cloudflare Pages、Vercel、Nginx 均可。HTTPS 页面会屏蔽仅支持 HTTP 的 ip-api（代理 / 机房标记少一个数据源），其余功能不受影响。
+GitHub Pages、Cloudflare Pages、Vercel、Nginx 均可。HTTPS 页面会屏蔽仅支持 HTTP 的 ip-api（代理 / 机房标记少一个数据源），其余功能不受影响。部署到自己的域名时，记得把 `index.html` 里 canonical、`og:url`、`og:image` 与 JSON-LD 中的网址换成你的地址。
 
 ### 小技巧
 
@@ -167,8 +167,9 @@ GitHub Pages、Cloudflare Pages、Vercel、Nginx 均可。HTTPS 页面会屏蔽�
 ## 项目结构
 
 ```
-index.html              页面外壳（顶栏、导航、页面容器）
+index.html              页面外壳（顶栏、导航、页面容器）与 SEO 元信息
 css/style.css           样式（浅色 / 深色主题）
+assets/                 图标与社交分享图
 js/
   util.js               网络请求、JSONP、DoH、IP 工具
   sources.js            IP 检测源清单

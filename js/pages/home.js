@@ -113,6 +113,20 @@
     </article>`;
   }
 
+  /** 出结果前的两张骨架卡片（多数分流用户有国内、国外两个出口） */
+  const EXIT_SKELETON = (() => {
+    const skel = '<span class="skel w60"></span>';
+    const kv = (ic, label) => `<div><dt>${icon(ic)}${label}</dt><dd>${skel}</dd></div>`;
+    const card = `<article class="exit exit-skel" aria-hidden="true">
+      <div class="exit-top"><span class="skel"></span></div>
+      <div class="exit-ip"><span class="skel"></span></div>
+      <div class="exit-loc"><span class="skel"></span></div>
+      <dl class="kv">${kv('building', '运营商')}${kv('hash', 'ASN')}${kv('shield', '类型')}</dl>
+      <div class="seen"><span class="seen-label">看到这个出口的服务</span><div class="seen-chips"><span class="skel"></span></div></div>
+    </article>`;
+    return card + card;
+  })();
+
   S.pages.home = {
     tiles, // IP 卡片复用
 
@@ -148,7 +162,8 @@
       if (route.intlExit && core.geoOf(route.intlExit)) core.ensureRisk(route.intlExit);
 
       let title = '正在检测…';
-      let sub = '';
+      // 检测中也给副标题一句说明：避免结果出来时标题区突然变高
+      let sub = v.finished ? '' : '正在从国内外几十个服务和网站的视角检测你的出口 IP，结果会陆续出现。';
       if (v.done.some((r) => r.ok)) {
         title = analyze.verdictText(route);
         if (route.status === 'split') {
@@ -177,7 +192,7 @@
           <div class="ht-detail">${esc(detail)}</div>
         </a>`).join('');
 
-      q('exits').innerHTML = v.exits.map((e) => exitCard(v, e)).join('');
+      q('exits').innerHTML = v.exits.length ? v.exits.map((e) => exitCard(v, e)).join('') : (v.finished ? '' : EXIT_SKELETON);
 
       const alerts = [];
       if (route.exceptions.length) {

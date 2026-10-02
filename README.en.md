@@ -87,7 +87,7 @@ Then visit http://localhost:8000 .
 
 **Option 3: static hosting**
 
-GitHub Pages, Cloudflare Pages, Vercel or Nginx all work. On HTTPS pages the HTTP-only ip-api is blocked as mixed content, so proxy / hosting flags have one source fewer; everything else works the same.
+GitHub Pages, Cloudflare Pages, Vercel or Nginx all work. On HTTPS pages the HTTP-only ip-api is blocked as mixed content, so proxy / hosting flags have one source fewer; everything else works the same. If you deploy under your own domain, replace the URLs in the canonical link, `og:url`, `og:image` and the JSON-LD block in `index.html`.
 
 ### Tips
 
@@ -169,8 +169,9 @@ Thanks to all of these services for their free APIs. Please use them responsibly
 ## Project layout
 
 ```
-index.html              Page shell (top bar, navigation, view container)
+index.html              Page shell (top bar, navigation, view container) and SEO metadata
 css/style.css           Styles (light / dark themes)
+assets/                 Icons and social preview image
 js/
   util.js               Requests, JSONP, DoH, IP helpers
   sources.js            IP check sources

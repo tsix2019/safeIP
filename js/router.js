@@ -28,6 +28,7 @@
   const ALL = [...NAV, ...MORE];
 
   let current = null;
+  const HOME_TITLE = document.title; // 首页沿用 index.html 里写给搜索引擎的标题
 
   function parse() {
     const raw = root.location.hash.replace(/^#\/?/, '');
@@ -75,7 +76,7 @@
     ui.applySizes(view);
     highlight(id);
     const meta = ALL.find((p) => p.id === id);
-    document.title = id === 'home' ? 'SafeIP · 全球 IP 分流检测' : `${meta.title} · SafeIP`;
+    document.title = id === 'home' ? HOME_TITLE : `${meta.title} · SafeIP`;
     root.scrollTo(0, 0);
   }
 
