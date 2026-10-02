@@ -82,6 +82,8 @@
 
   // ---------------- 调度 ----------------
 
+  let fpTask = null; // 指纹只采集一次
+
   function runConn(alive, onEach) {
     return util.pool(connectivity.sites, 4, async (site) => {
       if (!alive()) return;
@@ -122,13 +124,6 @@
       tick();
     }));
 
-    webrtc.servers.forEach((server) => webrtc.probe(server).then((r) => {
-      if (!alive()) return;
-      state.rtc.set(server.id, r);
-      r.publicIPs.forEach(ensureGeo);
-      tick();
-    }));
-
     dns.run().then((d) => {
       if (!alive()) return;
       state.dns = d;
@@ -136,11 +131,20 @@
       tick();
     });
 
+    // 网络请求都发出去之后再建 WebRTC 连接：刚启动的浏览器里第一次创建连接可能要一两秒
+    webrtc.servers.forEach((server) => webrtc.probe(server).then((r) => {
+      if (!alive()) return;
+      state.rtc.set(server.id, r);
+      r.publicIPs.forEach(ensureGeo);
+      tick();
+    }));
+
     // IP 检测结束后再测连通性，避免几十个并发请求干扰延迟数据
     Promise.all(ipJobs).then(() => runConn(() => alive() && connToken === state.connRun, tick));
 
-    if (!state.fp) {
-      fp.collect().then((f) => {
+    // 指纹要同步探测几十种字体（可达数百毫秒），等主线程空闲时再采集，不拖慢首批结果的显示
+    if (!fpTask) {
+      fpTask = util.idle(2000).then(fp.collect).then((f) => {
         state.fp = f;
         notify();
       });

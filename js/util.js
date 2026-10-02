@@ -210,6 +210,12 @@
     return Array.from(buf, (b) => chars[b % chars.length]).join('');
   }
 
+  /** 等主线程空闲，最多等 timeout 毫秒；不支持 requestIdleCallback 时退化为短定时器 */
+  const idle = (timeout = 1000) => new Promise((resolve) => {
+    if (root.requestIdleCallback) root.requestIdleCallback(() => resolve(), { timeout });
+    else setTimeout(resolve, 50);
+  });
+
   /** 以固定并发数处理列表；worker 不应抛错。 */
   async function pool(items, limit, worker) {
     const results = new Array(items.length);
@@ -296,6 +302,6 @@
 
   SafeIP.util = {
     request, jsonp, scriptVar, ipFamily, isPublicIP, parseTrace, maskIP, clean, place,
-    countryName, randomLabel, pool, makeError, errorText, doh, reverseV4, normalizeHost, hash,
+    countryName, randomLabel, idle, pool, makeError, errorText, doh, reverseV4, normalizeHost, hash,
   };
 })(typeof window !== 'undefined' ? window : globalThis);

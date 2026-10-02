@@ -84,6 +84,20 @@
     $('proto-note').textContent = '当前为 HTTPS 页面：仅支持 HTTP 的 ip-api 已停用，代理 / 机房标记会少一个数据源。下载到本地双击打开可获得完整数据。';
   }
 
+  /** 等浏览器画完下一帧再执行；后台标签页不触发 requestAnimationFrame，由定时器兜底 */
+  function afterPaint(fn) {
+    let done = false;
+    const run = () => {
+      if (done) return;
+      done = true;
+      fn();
+    };
+    requestAnimationFrame(() => setTimeout(run, 0));
+    setTimeout(run, 200);
+  }
+
   router.init();
-  core.start();
+  // 先把页面画出来再开始检测：启动检测要同步创建多个 WebRTC 连接，
+  // 刚启动的浏览器里可能占用主线程一两秒，放在前面会让页面主体迟迟不出现
+  afterPaint(() => core.start());
 })(window);
